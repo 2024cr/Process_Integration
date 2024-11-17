@@ -1,0 +1,65 @@
+from itertools import accumulate
+
+def Equation(x1, x2, y1, y2):
+    m = (y2 - y1) / (x2 - x1)
+    c = y1 - m * x1
+    return m, c
+#sink
+x_1 = [0, 50, 100, 80, 70]
+x1 = list(accumulate(x_1))
+y_1 = [0, 1, 5, 8, 14]
+y1 = list(accumulate(y_1))
+
+#source
+x_2 = [0, 50, 100, 70, 60]
+x2 = list(accumulate(x_2))
+y_2 = [0, 2.5, 10, 10.5, 15]
+y2 = list(accumulate(y_2))
+X1 = []
+Y1 = []
+X2 = []
+Y2 = []
+difference = []
+
+for i in range(len(x1) - 1):
+    m, c = Equation(x1[i], x1[i + 1], y1[i], y1[i + 1])
+    for j in range(y1[i], y1[i + 1] + 1):
+        x_val = (j - c) / m
+        if j not in Y1:  # Check if j already exists in Y1
+            Y1.append(j)
+            X1.append(x_val)
+
+for l in range(len(x2) - 1):
+    m, c = Equation(x2[l], x2[l + 1], y2[l], y2[l + 1])
+    for k in range(int(y2[l]), int(y2[l + 1]) + 1):
+        x_val = (k - c) / m
+        if k not in Y2:  # Check if k already exists in Y2
+            Y2.append(k)
+            X2.append(x_val)
+
+for u in range(len(Y1)):
+  diff = X1[u] - X2[u]
+  difference.append(diff)
+
+# Find the maximum difference and corresponding values
+max_diff_index = difference.index(max(difference))
+max_X1 = X1[max_diff_index]
+max_X2 = X2[max_diff_index]
+max_Y1 = Y1[max_diff_index]
+Fresh = X2[0] - x1[0] + max(difference)
+Waste = X2[-1] - x1[-1] + max(difference)
+Recycle = X1[-1] - X2[0] - max(difference)
+
+# Print the results
+print(X1, "\n")
+print(Y1, "\n")
+print(X2, "\n")
+print(Y2, "\n")
+print(difference, "\n")
+print("Maximum Difference:", max(difference))
+print("Corresponding X1:", max_X1)
+print("Corresponding X2:", max_X2)
+print("Corresponding Y1:", max_Y1)
+print("Fresh:", Fresh)
+print("Waste:", Waste)
+print("Recycle:", Recycle)
